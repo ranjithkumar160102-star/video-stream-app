@@ -40,203 +40,92 @@ const Home = () => {
         );
 
   return (
+  <div className="space-y-8 animate-in fade-in duration-700">
 
-    <div className="space-y-10 animate-in fade-in duration-700">
+    {/* HERO SECTION */}
+    <div className="relative h-64 md:h-80 rounded-[32px] overflow-hidden bg-gradient-to-r from-[#ff7b54] via-[#ff4ecd] to-[#7b2ff7]">
 
-      {/* HERO SECTION */}
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/30"></div>
 
-<div className="flex justify-center">
+      {/* CURVE DESIGN */}
+      <div className="absolute top-0 left-0 w-[500px] h-[300px] bg-cyan-500/40 rounded-full blur-3xl"></div>
 
-  <div className="relative overflow-hidden rounded-[30px] border border-white/10 bg-[#0b1220] shadow-2xl w-full max-w-5xl">
+      <div className="absolute top-[-100px] right-[-100px] w-[500px] h-[300px] bg-purple-900/60 rounded-full blur-3xl"></div>
 
-    {/* GLOW */}
+      <div className="absolute bottom-[-120px] left-[300px] w-[400px] h-[250px] bg-pink-300/30 rounded-full blur-3xl"></div>
 
-    <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-cyan-500/10 blur-3xl rounded-full"></div>
+      {/* CONTENT */}
+      <div className="relative z-10 flex flex-col justify-center h-full px-8 md:px-14">
 
-    <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-fuchsia-600/10 blur-3xl rounded-full"></div>
-
-    <div className="relative z-10 grid lg:grid-cols-2 gap-8 items-center p-6 md:p-10">
-
-      {/* LEFT CONTENT */}
-
-      <div>
-
-        {/* BADGE */}
-
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/20 text-cyan-300 text-[10px] font-bold tracking-widest uppercase mb-5">
-
-          <Sparkles
-            size={12}
-            className="fill-cyan-300"
-          />
-
-          Premium Streaming
-
+        {/* PREMIUM TAG */}
+        <div className="w-fit px-4 py-1 rounded-full bg-cyan-400 text-[10px] font-black uppercase tracking-[3px] text-white shadow-lg">
+          Premium
         </div>
 
         {/* TITLE */}
-
-        <h1 className="text-4xl md:text-6xl leading-tight text-white font-['Patrick_Hand']">
-
-          <span className="block">
-            Enjoy The
+        <h1 className="mt-5 text-5xl md:text-6xl font-black text-white leading-tight">
+          Video Streaming
+          <br />
+          <span className="text-cyan-300">
+            Platform
           </span>
-
-          <span className="bg-gradient-to-r from-cyan-400 via-pink-500 to-purple-500 bg-clip-text text-transparent">
-            Best Videos
-          </span>
-
         </h1>
 
-        {/* DESCRIPTION */}
-
-        <p className="mt-5 text-gray-300 text-sm md:text-base leading-relaxed max-w-md">
-
-          Unlimited movies, music, gaming and trending entertainment videos
-          in one futuristic streaming platform.
-
+        {/* SUBTITLE */}
+        <p className="mt-4 text-gray-200 text-sm md:text-base max-w-xl font-medium">
+          Watch trending movies, music, gaming and entertainment videos
+          with stunning streaming experience.
         </p>
 
-        {/* BUTTONS */}
-
-        <div className="flex gap-3 mt-7">
-
-          <button className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-gradient-to-r from-pink-500 to-cyan-500 text-white text-sm font-bold hover:scale-105 transition-all duration-300 shadow-lg shadow-pink-500/20">
-
-            <Play
-              size={16}
-              className="fill-white"
-            />
-
-            Explore Now
-
-          </button>
-
-          <button className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#151c2f] border border-white/10 text-white text-sm font-bold hover:bg-[#1d2740] transition-all duration-300">
-
-            <Bookmark size={16} />
-
-            My List
-
-          </button>
-
-        </div>
-
       </div>
 
-      {/* RIGHT IMAGE */}
+    </div>
 
-      <div className="relative">
+    <div className="space-y-6">
 
-        <img
-          src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=1200&auto=format&fit=crop"
-          alt="Hero"
-          className="w-full h-[320px] object-cover rounded-[24px] border border-white/10 shadow-2xl"
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-bold flex items-center gap-2">
+          Discovery
+          <span className="w-2 h-2 bg-cyan-500 rounded-2xl animate-pulse" />
+        </h2>
+
+        <CategoryFilter
+          selected={selectedCategory}
+          onSelect={setSelectedCategory}
         />
-
-        {/* FLOATING CARD */}
-
-        <div className="absolute -bottom-4 left-4 bg-[#0f172a]/90 backdrop-blur-xl border border-white/10 rounded-2xl px-4 py-3 shadow-2xl">
-
-          <p className="text-white font-bold text-xs">
-            Trending Now 
-          </p>
-
-          <p className="text-gray-400 text-[10px] mt-1">
-            Movies • Music • Gaming
-          </p>
-
-        </div>
-
       </div>
+
+      {loading ? (
+        <div className="flex flex-col items-center justify-center py-20 text-gray-500 gap-4">
+          <Loader2 className="animate-spin" size={40} />
+          <p className="font-bold text-sm uppercase tracking-widest">
+            Fetching content...
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
+          {filteredVideos.map((video) => (
+            <VideoCard key={video.id} video={video} />
+          ))}
+        </div>
+      )}
+
+      {!loading && filteredVideos.length === 0 && (
+        <div className="text-center py-20 text-gray-500">
+          <p className="text-lg font-bold">
+            No videos found in this category.
+          </p>
+
+          <p className="text-sm">
+            Be the first to add one!
+          </p>
+        </div>
+      )}
 
     </div>
 
   </div>
-
-</div>
-
-      {/* DISCOVERY SECTION */}
-
-      <div className="space-y-6">
-
-        <div className="flex items-center justify-between">
-
-          <h2 className="text-2xl font-black flex items-center gap-3">
-
-            Discovery
-
-            <span className="w-2 h-2 bg-cyan-500 rounded-full animate-pulse" />
-
-          </h2>
-
-          <CategoryFilter
-            selected={selectedCategory}
-            onSelect={setSelectedCategory}
-          />
-
-        </div>
-
-        {loading ? (
-
-          <div className="flex flex-col items-center justify-center py-20 text-gray-500 gap-4">
-
-            <Loader2
-              className="animate-spin"
-              size={40}
-            />
-
-            <p className="font-bold text-sm uppercase tracking-widest">
-
-              Fetching content...
-
-            </p>
-
-          </div>
-
-        ) : (
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
-
-            {filteredVideos.map((video) => (
-
-              <VideoCard
-                key={video.id}
-                video={video}
-              />
-
-            ))}
-
-          </div>
-
-        )}
-
-        {!loading && filteredVideos.length === 0 && (
-
-          <div className="text-center py-20 text-gray-500">
-
-            <p className="text-lg font-bold">
-
-              No videos found in this category.
-
-            </p>
-
-            <p className="text-sm">
-
-              Be the first to add one!
-
-            </p>
-
-          </div>
-
-        )}
-
-      </div>
-
-    </div>
-
-  );
-
+);
 };
-
 export default Home;
